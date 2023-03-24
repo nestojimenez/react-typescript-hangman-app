@@ -29,11 +29,20 @@ const KEYS = [
   "z",
 ]
 
-const Keyboard = () => {
+type KeyboardProps = {
+  activeLetter:string[]
+  inactiveLetters:string[]
+  addGuessedLetter:(letter: string) => void
+  disable?: boolean
+}
+
+const Keyboard = ({activeLetter, inactiveLetters, addGuessedLetter, disable=false}:KeyboardProps)=> {
   return (
     <div style={{margin:'10px', display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(75px, 1fr)', gap:'.5rem'}}>
       {KEYS.map(key =>{
-        return <button className='btn' key={key}>{key}</button>
+        const isActive = activeLetter.includes(key)
+        const isInactive = inactiveLetters.includes(key)
+        return <button onClick={()=>addGuessedLetter(key)} className={`btn ${isActive ? 'active' : ''} ${isInactive ? 'inactive' : ''}`} disabled={isInactive || isActive || disable} key={key} >{key}</button>
       })}
     </div>
   )
